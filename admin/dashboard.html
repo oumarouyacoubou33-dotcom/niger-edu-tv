@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord Admin - Niger Édu TV</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .dashboard-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn-add {
+            background: #008751;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .admin-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            gap: 10px;
+        }
+        .admin-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .btn-delete {
+            background: #d9534f;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <h2>Gestion du Contenu - Admin</h2>
+        <a href="../index.html" class="admin-btn" style="margin-bottom: 20px; display: inline-block;">Voir le site</a>
+
+        <div class="form-section">
+            <h3>Publier un Article</h3>
+            <form id="add-news-form">
+                <input type="text" id="news-title" class="form-control" placeholder="Titre de l'article" required>
+                
+                <select id="news-category" class="form-control" required>
+                    <option value="Éducation">Éducation</option>
+                    <option value="Sport">Sport</option>
+                    <option value="Divertissement">Divertissement</option>
+                    <option value="Actualités">Actualités</option>
+                    <option value="Interview">Interview</option>
+                </select>
+
+                <label><b>Image depuis la galerie du téléphone :</b></label>
+                <input type="file" id="news-image-file" class="form-control" accept="image/*">
+
+                <label><b>OU Lien d'image Web :</b></label>
+                <input type="url" id="news-image-url" class="form-control" placeholder="https://example.com/image.jpg">
+
+                <textarea id="news-content" class="form-control" placeholder="Contenu de l'article..." style="height: 100px;" required></textarea>
+                
+                <button type="submit" class="btn-add">Publier</button>
+            </form>
+        </div>
+
+        <hr style="margin: 30px 0;">
+
+        <!-- Wurin goge hotuna da labaran da aka riga aka dora -->
+        <h3>Liste des Publications (Supprimer / Cirewa)</h3>
+        <div id="admin-news-list">
+            <p>Chargement des articles...</p>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+/* Reset da Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #212529;
+    overflow-x: hidden;
+}
+
+/* Header & Navigation */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #008751, #005a36);
+    padding: 15px 5%;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.logo h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.logo h2 span {
+    color: #fcd116;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 15px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #fcd116;
+}
+
+.admin-btn {
+    background: #e05206;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(224, 82, 6, 0.4);
+}
+
+/* Ticker / Labarai Masu Zafi (Breaking News) */
+.ticker-container {
+    background: #111;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 8px 5%;
+    font-size: 0.85rem;
+}
+
+.ticker-title {
+    background: #e05206;
+    padding: 3px 10px;
+    font-weight: bold;
+    border-radius: 3px;
+    margin-right: 15px;
+    white-space: nowrap;
+}
+
+.ticker-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #ddd;
+}
+
+/* Bar na Rukunoni (Category Navigation Bar) */
+.category-section {
+    background: white;
+    padding: 12px 5%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.category-bar {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+
+.category-bar::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
+}
+
+.cat-btn {
+    background: #f1f3f5;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #495057;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.cat-btn.active, .cat-btn:hover {
+    background: #008751;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,135,81,0.2);
+}
+
+/* Main Container Layout */
+.main-layout {
+    max-width: 1200px;
+    margin: 25px auto;
+    padding: 0 4%;
+    display: grid;
+    grid-template-columns: 2.2fr 1fr;
+    gap: 25px;
+}
+
+/* Section Title Stylings */
+.section-title {
+    font-size: 1.25rem;
+    color: #008751;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid #eef2f5;
+    padding-bottom: 8px;
+}
+
+.section-title::before {
+    content: '';
+    width: 12px;
+    height: 20px;
+    background: #e05206;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+/* Hero Live TV Stream Section */
+.hero-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    background: #000;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.hero-details {
+    padding: 20px;
+}
+
+.hero-details h1 {
+    font-size: 1.3rem;
+    color: #111;
+    margin-bottom: 8px;
+}
+
+.hero-details p {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Grid na Labarai (Articles Grid) */
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.news-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.news-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.news-card-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.badge {
+    align-self: flex-start;
+    background: rgba(0, 135, 81, 0.1);
+    color: #008751;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.badge.sport { background: rgba(224, 82, 6, 0.1); color: #e05206; }
+.badge.divertissement { background: rgba(111, 66, 193, 0.1); color: #6f42c1; }
+.badge.interview { background: rgba(13, 202, 240, 0.1); color: #0dcaf0; }
+
+.news-card h3 {
+    font-size: 1rem;
+    line-height: 1.4;
+    color: #212529;
+    margin-bottom: 8px;
+}
+
+.news-card p {
+    font-size: 0.85rem;
+    color: #6c757d;
+    line-height: 1.5;
+}
+
+/* Sidebar Widgets */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.widget {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+}
+
+.widget h3 {
+    font-size: 1.1rem;
+    color: #008751;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f1f3f5;
+    padding-bottom: 8px;
+}
+
+.quick-links-list {
+    list-style: none;
+}
+
+.quick-links-list li {
+    padding: 10px 0;
+    border-bottom: 1px dashed #e9ecef;
+}
+
+.quick-links-list a {
+    text-decoration: none;
+    color: #333;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: 0.2s;
+}
+
+.quick-links-list a:hover {
+    color: #008751;
+    padding-left: 5px;
+}
+
+/* Footer Design */
+footer {
+    background: #111827;
+    color: #9ca3af;
+    padding: 40px 5% 20px 5%;
+    margin-top: 50px;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.footer-col h4 {
+    color: white;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.footer-col p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #1f2937;
+    font-size: 0.8rem;
+}
+
+/* Responsive Scaling for Android Devices */
+@media (max-width: 850px) {
+    .main-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .nav-links {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+/* Modal Viewer Stylings (Don buɗe labarin da girma) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: auto;
+    border-radius: 12px;
+    max-width: 700px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    background: rgba(0,0,0,0.6);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.modal-body img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.modal-text-content {
+    padding: 25px;
+}
+
+.modal-text-content h2 {
+    font-size: 1.4rem;
+    color: #008751;
+    margin-bottom: 10px;
+}
+
+.modal-text-content p {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+    white-space: pre-line;
+}
+
+.news-card {
+    cursor: pointer;
+}

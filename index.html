@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niger Édu TV - Télévision Éducative & Informative</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <h2>Niger<span>ÉduTV</span></h2>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="resources.html">Épreuves PDF</a></li>
+            <li><a href="admin/login.html" class="admin-btn">Espace Admin</a></li>
+        </ul>
+    </header>
+
+    <!-- Breaking News Ticker -->
+    <div class="ticker-container">
+        <span class="ticker-title">EN DIRECT</span>
+        <div class="ticker-text">Bienvenue sur Niger Édu TV - Suivez nos cours et actualités en temps réel.</div>
+    </div>
+
+    <!-- Category Filter Bar -->
+    <div class="category-section">
+        <div class="category-bar">
+            <button class="cat-btn active" onclick="filterNews('Toutes')">Tout Voir</button>
+            <button class="cat-btn" onclick="filterNews('Éducation')">Éducation</button>
+            <button class="cat-btn" onclick="filterNews('Sport')">Sport</button>
+            <button class="cat-btn" onclick="filterNews('Divertissement')">Divertissement</button>
+            <button class="cat-btn" onclick="filterNews('Actualités')">Actualités</button>
+            <button class="cat-btn" onclick="filterNews('Interview')">Interview</button>
+        </div>
+    </div>
+
+    <!-- Main Content Layout -->
+    <div class="main-layout">
+        
+        <main class="content-area">
+            <!-- Section 1: Live Stream -->
+            <section class="hero-card">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Niger Édu TV Live Stream" allowfullscreen></iframe>
+                </div>
+                <div class="hero-details">
+                    <h1>Direct - Plateforme Éducative Officielle du Niger</h1>
+                    <p>Accédez aux cours en direct, débats éducatifs et émissions scolaires.</p>
+                </div>
+            </section>
+
+            <!-- Section 2: Articles & Publications Grid -->
+            <section>
+                <h2 class="section-title">Dernières Publications</h2>
+                <div class="news-grid" id="news-container">
+                    <p>Chargement des articles...</p>
+                </div>
+            </section>
+        </main>
+
+        <aside class="sidebar">
+            <div class="widget">
+                <h3>Annonces Scolaires</h3>
+                <ul class="quick-links-list">
+                    <li><a href="#">Examens du Baccalauréat <span>&rarr;</span></a></li>
+                    <li><a href="#">Calendrier des Vacances <span>&rarr;</span></a></li>
+                    <li><a href="#">Orientation Universitaire <span>&rarr;</span></a></li>
+                </ul>
+            </div>
+
+            <div class="widget" style="background: linear-gradient(135deg, #008751, #005a36); color: white;">
+                <h3 style="color: #fcd116; border-color: rgba(255,255,255,0.2);">Citation du Jour</h3>
+                <p style="font-style: italic; font-size: 0.9rem;">"L'éducation est l'arme la plus puissante qu'on puisse utiliser pour changer le monde."</p>
+                <small style="display:block; margin-top: 10px; color: #fcd116;">- Nelson Mandela</small>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- Article Modal Viewer (Wurin Buɗe Labari idan an Taba Hoto) -->
+    <div id="articleModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Article Image">
+                <div class="modal-text-content">
+                    <span id="modalBadge" class="badge">Category</span>
+                    <h2 id="modalTitle">Titre de l'article</h2>
+                    <p id="modalDescription">Description complète...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>Niger Édu TV</h4>
+                <p>La première télévision éducative en ligne dédiée aux élèves et étudiants du Niger.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Rubriques</h4>
+                <p>Éducation | Sport | Divertissement | Interviews | Actualités</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Niger Édu TV. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
