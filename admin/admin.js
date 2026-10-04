@@ -17,7 +17,7 @@ function displayAdminNews() {
     actualites.forEach((item) => {
         html += `
             <div class="admin-item">
-                <img src="${item.imageUrl}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/600x400?text=Image'">
+                <img src="${item.imageUrl}" alt="${item.title}" style="width:60px; height:60px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/600x400?text=Image'">
                 <div style="flex-grow: 1; margin-left: 10px;">
                     <strong style="display:block; font-size: 0.95rem;">${item.title}</strong>
                     <small style="color: #666;">${item.category || 'Éducation'}</small>
@@ -74,59 +74,35 @@ function extractYouTubeId(url) {
 }
 
 if (videoForm) {
-    videoForm.addEventListener('submit', async (e) => {
+    videoForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const title = document.getElementById('video-title').value;
         const videoUrlInput = document.getElementById('video-url').value.trim();
-        const videoFileInput = document.getElementById('video-file');
 
-        let embedUrl = "";
-        let isYouTube = false;
-
-        if (videoUrlInput !== "") {
-            const ytId = extractYouTubeId(videoUrlInput);
-            if (ytId) {
-                embedUrl = `https://www.youtube.com/embed/${ytId}`;
-                isYouTube = true;
-            } else {
-                embedUrl = videoUrlInput;
-            }
-        } else if (videoFileInput.files && videoFileInput.files[0]) {
-            const file = videoFileInput.files[0];
-            // Tabbatar fayil din bai wuce 2MB ba saboda localStorage
-            if (file.size > 2 * 1024 * 1024) {
-                alert("La vidéo est trop lourde pour le stockage local (Maximum 2 Mo). Utilisez plutôt un lien YouTube.");
-                return;
-            }
-            try {
-                embedUrl = await convertBase64(file);
-            } catch (err) {
-                alert("Erreur de stockage.");
-                return;
-            }
-        } else {
-            alert("Veuillez fournir un lien YouTube ou choisir une petite vidéo.");
+        if (!videoUrlInput) {
+            alert("Veuillez coller un lien de vidéo.");
             return;
+        }
+
+        let embedUrl = videoUrlInput;
+        const ytId = extractYouTubeId(videoUrlInput);
+        if (ytId) {
+            embedUrl = `https://www.youtube.com/embed/${ytId}`;
         }
 
         const newVideo = {
             id: Date.now(),
             title,
-            videoUrl: embedUrl,
-            isYouTube: isYouTube
+            videoUrl: embedUrl
         };
 
-        try {
-            let videos = JSON.parse(localStorage.getItem('videos')) || [];
-            videos.unshift(newVideo);
-            localStorage.setItem('videos', JSON.stringify(videos));
+        let videos = JSON.parse(localStorage.getItem('videos')) || [];
+        videos.unshift(newVideo);
+        localStorage.setItem('videos', JSON.stringify(videos));
 
-            alert("Vidéo ajoutée avec succès !");
-            videoForm.reset();
-            displayAdminVideos();
-        } catch (err) {
-            alert("Espace mémoire saturé. Veuillez utiliser un lien YouTube.");
-        }
+        alert("Vidéo ajoutée avec succès !");
+        videoForm.reset();
+        displayAdminVideos();
     });
 }
 
