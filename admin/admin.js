@@ -67,50 +67,69 @@ function deleteVideo(id) {
     }
 }
 
-// Event Dora Bidiyo daga Storage
+function extractYouTubeId(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+}
+
 if (videoForm) {
     videoForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const title = document.getElementById('video-title').value;
-        const videoInput = document.getElementById('video-file');
+        const videoUrlInput = document.getElementById('video-url').value.trim();
+        const videoFileInput = document.getElementById('video-file');
 
-        if (!videoInput.files || !videoInput.files[0]) {
-            alert("Veuillez sélectionner une vidéo.");
+        let embedUrl = "";
+        let isYouTube = false;
+
+        if (videoUrlInput !== "") {
+            const ytId = extractYouTubeId(videoUrlInput);
+            if (ytId) {
+                embedUrl = `https://www.youtube.com/embed/${ytId}`;
+                isYouTube = true;
+            } else {
+                embedUrl = videoUrlInput;
+            }
+        } else if (videoFileInput.files && videoFileInput.files[0]) {
+            const file = videoFileInput.files[0];
+            // Tabbatar fayil din bai wuce 2MB ba saboda localStorage
+            if (file.size > 2 * 1024 * 1024) {
+                alert("La vidéo est trop lourde pour le stockage local (Maximum 2 Mo). Utilisez plutôt un lien YouTube.");
+                return;
+            }
+            try {
+                embedUrl = await convertBase64(file);
+            } catch (err) {
+                alert("Erreur de stockage.");
+                return;
+            }
+        } else {
+            alert("Veuillez fournir un lien YouTube ou choisir une petite vidéo.");
             return;
         }
 
-        const file = videoInput.files[0];
-
-        // Tabbatar girman bidiyo ba ya wuce 8MB ba
-        if (file.size > 8 * 1024 * 1024) {
-            alert("La vidéo est trop lourde pour le stockage local (Maximum 8 Mo). Veuillez choisir une vidéo plus courte.");
-            return;
-        }
+        const newVideo = {
+            id: Date.now(),
+            title,
+            videoUrl: embedUrl,
+            isYouTube: isYouTube
+        };
 
         try {
-            const videoDataUrl = await convertBase64(file);
-
-            const newVideo = {
-                id: Date.now(),
-                title,
-                videoUrl: videoDataUrl,
-                isLocal: true
-            };
-
             let videos = JSON.parse(localStorage.getItem('videos')) || [];
             videos.unshift(newVideo);
             localStorage.setItem('videos', JSON.stringify(videos));
 
-            alert("Vidéo importée avec succès !");
+            alert("Vidéo ajoutée avec succès !");
             videoForm.reset();
             displayAdminVideos();
         } catch (err) {
-            alert("Erreur lors du chargement de la vidéo. Espace mémoire saturé.");
+            alert("Espace mémoire saturé. Veuillez utiliser un lien YouTube.");
         }
     });
 }
 
-// Convert File to Base64 String
 function convertBase64(file) {
     return new Promise((resolve, reject) => {
         const fileReader = new FileReader();

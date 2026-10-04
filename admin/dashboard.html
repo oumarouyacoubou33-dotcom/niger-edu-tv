@@ -91,16 +91,19 @@
 
         <hr style="margin: 30px 0;">
 
-        <!-- Formulaire Bidiyo daga Storage -->
+        <!-- Formulaire Bidiyo (YouTube KO Storage) -->
         <div class="form-section">
-            <h3>2. Téléverser une Vidéo depuis le Stockage (MP4)</h3>
+            <h3>2. Ajouter une Vidéo</h3>
             <form id="add-video-form">
                 <input type="text" id="video-title" class="form-control" placeholder="Titre de la vidéo" required>
                 
-                <label><b>Choisir la vidéo depuis la galerie (court extrait recommandé):</b></label>
-                <input type="file" id="video-file" class="form-control" accept="video/mp4,video/webm" required>
+                <label><b>Option A: Lien YouTube / URL :</b></label>
+                <input type="text" id="video-url" class="form-control" placeholder="https://www.youtube.com/watch?v=...">
+
+                <label><b>Option B: Choisir un TTRÈS PETIT fichier vidéo (< 2 Mo) :</b></label>
+                <input type="file" id="video-file" class="form-control" accept="video/mp4,video/webm">
                 
-                <button type="submit" class="btn-add" style="background: #e05206;">Importer la Vidéo</button>
+                <button type="submit" class="btn-add" style="background: #e05206;">Ajouter la Vidéo</button>
             </form>
         </div>
 
