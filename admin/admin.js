@@ -1,68 +1,92 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
 if (localStorage.getItem("isAdminLoggedIn") !== "true") {
     window.location.href = "login.html";
 }
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAaO0fi15mPE-IwRO2ii7-cJjXzWz4eeO4",
+  authDomain: "niger-edu-tv.firebaseapp.com",
+  projectId: "niger-edu-tv",
+  storageBucket: "niger-edu-tv.firebasestorage.app",
+  messagingSenderId: "424180598206",
+  appId: "1:424180598206:web:97cc0141e78e596c07a5ef",
+  measurementId: "G-SD9D7CX0BX"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const newsForm = document.getElementById('add-news-form');
 const videoForm = document.getElementById('add-video-form');
 const adminNewsList = document.getElementById('admin-news-list');
 const adminVideoList = document.getElementById('admin-video-list');
 
-function displayAdminNews() {
-    let actualites = JSON.parse(localStorage.getItem('actualites')) || [];
-    if (actualites.length === 0) {
-        adminNewsList.innerHTML = '<p style="color: #777;">Aucun article enregistré.</p>';
-        return;
-    }
-    let html = '';
-    actualites.forEach((item) => {
-        html += `
-            <div class="admin-item">
-                <img src="${item.imageUrl}" alt="${item.title}" style="width:60px; height:60px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/600x400?text=Image'">
-                <div style="flex-grow: 1; margin-left: 10px;">
-                    <strong style="display:block; font-size: 0.95rem;">${item.title}</strong>
-                    <small style="color: #666;">${item.category || 'Éducation'}</small>
+async function displayAdminNews() {
+    try {
+        const q = query(collection(db, "actualites"));
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+            adminNewsList.innerHTML = '<p style="color: #777;">Aucun article enregistré.</p>';
+            return;
+        }
+        let html = '';
+        querySnapshot.forEach((docSnap) => {
+            const item = docSnap.data();
+            html += `
+                <div class="admin-item">
+                    <img src="${item.imageUrl}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/600x400?text=Image'">
+                    <div style="flex-grow: 1; margin-left: 10px;">
+                        <strong style="display:block; font-size: 0.95rem;">${item.title}</strong>
+                        <small style="color: #666;">${item.category || 'Éducation'}</small>
+                    </div>
+                    <button class="btn-delete" onclick="deleteArticle('${docSnap.id}')">Supprimer</button>
                 </div>
-                <button class="btn-delete" onclick="deleteArticle(${item.id})">Supprimer</button>
-            </div>
-        `;
-    });
-    adminNewsList.innerHTML = html;
+            `;
+        });
+        adminNewsList.innerHTML = html;
+    } catch (e) {
+        console.error("Erreur news: ", e);
+    }
 }
 
-function displayAdminVideos() {
-    let videos = JSON.parse(localStorage.getItem('videos')) || [];
-    if (videos.length === 0) {
-        adminVideoList.innerHTML = '<p style="color: #777;">Aucune vidéo enregistrée.</p>';
-        return;
-    }
-    let html = '';
-    videos.forEach((item) => {
-        html += `
-            <div class="admin-item">
-                <div style="flex-grow: 1;">
-                    <strong style="display:block; font-size: 0.95rem;">${item.title}</strong>
+async function displayAdminVideos() {
+    try {
+        const q = query(collection(db, "videos"));
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+            adminVideoList.innerHTML = '<p style="color: #777;">Aucune vidéo enregistrée.</p>';
+            return;
+        }
+        let html = '';
+        querySnapshot.forEach((docSnap) => {
+            const item = docSnap.data();
+            html += `
+                <div class="admin-item">
+                    <div style="flex-grow: 1;">
+                        <strong style="display:block; font-size: 0.95rem;">${item.title}</strong>
+                    </div>
+                    <button class="btn-delete" onclick="deleteVideo('${docSnap.id}')">Supprimer</button>
                 </div>
-                <button class="btn-delete" onclick="deleteVideo(${item.id})">Supprimer</button>
-            </div>
-        `;
-    });
-    adminVideoList.innerHTML = html;
+            `;
+        });
+        adminVideoList.innerHTML = html;
+    } catch (e) {
+        console.error("Erreur videos: ", e);
+    }
 }
 
-function deleteArticle(id) {
+window.deleteArticle = async function(id) {
     if (confirm("Supprimer cet article ?")) {
-        let actualites = JSON.parse(localStorage.getItem('actualites')) || [];
-        actualites = actualites.filter(item => item.id !== id);
-        localStorage.setItem('actualites', JSON.stringify(actualites));
+        await deleteDoc(doc(db, "actualites", id));
         displayAdminNews();
     }
 }
 
-function deleteVideo(id) {
+window.deleteVideo = async function(id) {
     if (confirm("Supprimer cette vidéo ?")) {
-        let videos = JSON.parse(localStorage.getItem('videos')) || [];
-        videos = videos.filter(item => item.id !== id);
-        localStorage.setItem('videos', JSON.stringify(videos));
+        await deleteDoc(doc(db, "videos", id));
         displayAdminVideos();
     }
 }
@@ -73,16 +97,37 @@ function extractYouTubeId(url) {
     return (match && match[2].length === 11) ? match[2] : null;
 }
 
+if (newsForm) {
+    newsForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('news-title').value;
+        const category = document.getElementById('news-category').value;
+        const content = document.getElementById('news-content').value;
+        const imageUrl = document.getElementById('news-image-url').value;
+
+        try {
+            await addDoc(collection(db, "actualites"), {
+                title,
+                category,
+                content,
+                imageUrl,
+                createdAt: new Date().toISOString(),
+                date: new Date().toLocaleDateString('fr-FR')
+            });
+            alert('Article publié avec succès sur Firebase !');
+            newsForm.reset();
+            displayAdminNews();
+        } catch (err) {
+            alert("Erreur lors de la publication : " + err.message);
+        }
+    });
+}
+
 if (videoForm) {
-    videoForm.addEventListener('submit', (e) => {
+    videoForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const title = document.getElementById('video-title').value;
         const videoUrlInput = document.getElementById('video-url').value.trim();
-
-        if (!videoUrlInput) {
-            alert("Veuillez coller un lien de vidéo.");
-            return;
-        }
 
         let embedUrl = videoUrlInput;
         const ytId = extractYouTubeId(videoUrlInput);
@@ -90,63 +135,22 @@ if (videoForm) {
             embedUrl = `https://www.youtube.com/embed/${ytId}`;
         }
 
-        const newVideo = {
-            id: Date.now(),
-            title,
-            videoUrl: embedUrl
-        };
-
-        let videos = JSON.parse(localStorage.getItem('videos')) || [];
-        videos.unshift(newVideo);
-        localStorage.setItem('videos', JSON.stringify(videos));
-
-        alert("Vidéo ajoutée avec succès !");
-        videoForm.reset();
-        displayAdminVideos();
-    });
-}
-
-function convertBase64(file) {
-    return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(file);
-        fileReader.onload = () => resolve(fileReader.result);
-        fileReader.onerror = (error) => reject(error);
-    });
-}
-
-if (newsForm) {
-    newsForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const title = document.getElementById('news-title').value;
-        const category = document.getElementById('news-category').value;
-        const content = document.getElementById('news-content').value;
-        const fileInput = document.getElementById('news-image-file');
-        const urlInput = document.getElementById('news-image-url').value;
-
-        let imageUrl = urlInput;
-        if (fileInput.files && fileInput.files[0]) {
-            try {
-                imageUrl = await convertBase64(fileInput.files[0]);
-            } catch (err) {
-                alert("Erreur d'image.");
-                return;
-            }
+        try {
+            await addDoc(collection(db, "videos"), {
+                title,
+                videoUrl: embedUrl,
+                createdAt: new Date().toISOString()
+            });
+            alert("Vidéo ajoutée avec succès sur Firebase !");
+            videoForm.reset();
+            displayAdminVideos();
+        } catch (err) {
+            alert("Erreur lors de l'ajout de la vidéo : " + err.message);
         }
-        if (!imageUrl) imageUrl = 'https://via.placeholder.com/600x400?text=Niger+Edu+TV';
-
-        const newArticle = { id: Date.now(), title, category, content, imageUrl, date: new Date().toLocaleDateString() };
-        let actualites = JSON.parse(localStorage.getItem('actualites')) || [];
-        actualites.unshift(newArticle);
-        localStorage.setItem('actualites', JSON.stringify(actualites));
-
-        alert('Article publié avec succès !');
-        newsForm.reset();
-        displayAdminNews();
     });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (adminNewsList) displayAdminNews();
-    if (adminVideoList) displayAdminVideos();
+    displayAdminNews();
+    displayAdminVideos();
 });

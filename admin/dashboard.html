@@ -40,7 +40,7 @@
             border-bottom: 1px solid #eee;
             gap: 10px;
         }
-        .admin-item img, .admin-item video {
+        .admin-item img {
             width: 60px;
             height: 60px;
             object-fit: cover;
@@ -60,7 +60,7 @@
 <body>
 
     <div class="dashboard-container">
-        <h2>Gestion du Contenu - Admin</h2>
+        <h2>Gestion du Contenu - Admin (Firebase)</h2>
         <a href="../index.html" class="admin-btn" style="margin-bottom: 20px; display: inline-block;">Voir le site</a>
 
         <!-- Formulaire Article/Hoto -->
@@ -77,11 +77,8 @@
                     <option value="Interview">Interview</option>
                 </select>
 
-                <label><b>Image depuis le téléphone :</b></label>
-                <input type="file" id="news-image-file" class="form-control" accept="image/*">
-
-                <label><b>OU Lien d'image Web :</b></label>
-                <input type="url" id="news-image-url" class="form-control" placeholder="https://example.com/image.jpg">
+                <label><b>Lien d'image Web (URL) :</b></label>
+                <input type="url" id="news-image-url" class="form-control" placeholder="https://example.com/image.jpg" required>
 
                 <textarea id="news-content" class="form-control" placeholder="Contenu de l'article..." style="height: 90px;" required></textarea>
                 
@@ -91,17 +88,14 @@
 
         <hr style="margin: 30px 0;">
 
-        <!-- Formulaire Bidiyo (YouTube KO Storage) -->
+        <!-- Formulaire Bidiyo -->
         <div class="form-section">
-            <h3>2. Ajouter une Vidéo</h3>
+            <h3>2. Ajouter une Vidéo (YouTube / Lien Web)</h3>
             <form id="add-video-form">
                 <input type="text" id="video-title" class="form-control" placeholder="Titre de la vidéo" required>
                 
-                <label><b>Option A: Lien YouTube / URL :</b></label>
-                <input type="text" id="video-url" class="form-control" placeholder="https://www.youtube.com/watch?v=...">
-
-                <label><b>Option B: Choisir un TTRÈS PETIT fichier vidéo (< 2 Mo) :</b></label>
-                <input type="file" id="video-file" class="form-control" accept="video/mp4,video/webm">
+                <label><b>Lien YouTube ou URL de la vidéo :</b></label>
+                <input type="url" id="video-url" class="form-control" placeholder="https://www.youtube.com/watch?v=..." required>
                 
                 <button type="submit" class="btn-add" style="background: #e05206;">Ajouter la Vidéo</button>
             </form>
@@ -110,12 +104,13 @@
         <hr style="margin: 30px 0;">
 
         <h3>Gestion des Publications</h3>
-        <div id="admin-news-list"><p>Chargement...</p></div>
+        <div id="admin-news-list"><p>Chargement en cours...</p></div>
 
         <h3 style="margin-top: 20px;">Gestion des Vidéos</h3>
-        <div id="admin-video-list"><p>Chargement...</p></div>
+        <div id="admin-video-list"><p>Chargement en cours...</p></div>
     </div>
 
-    <script src="admin.js"></script>
+    <!-- Firebase Scripts -->
+    <script type="module" src="admin.js"></script>
 </body>
 </html>
